@@ -37,7 +37,7 @@ void init(ifstream &file,string&source_code)
 	{
 		BUF = buf;
 		while(*BUF){
-			if(*BUF != ' ')source_code += *BUF;
+			source_code += *BUF;
 			BUF ++ ;
 		}
 		source_code += '\n';
@@ -151,7 +151,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 				state = START;
 				break;
 			default:
-				error("»»ÐÐ·û´íÎó");
+				error("È±ÉÙ·ÖºÅ");
 				// something wrong!
 			}
 		}
@@ -575,7 +575,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 
 			case CONST_CHAR:
 				if(source[i+1]!= '\'')
-					error("what the funck");
+					error("illegal char");
 				Tmp.s = (s+=c);
 				Tmp.t = TK_CCHAR;
 
@@ -696,6 +696,51 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 				break;
 
 			case COMMENT:COMMENT_START:
+				break;
+			}
+		}
+
+		else if(c == ' ')
+		{
+			switch(state)
+			{
+			case START:
+			case COMMENT :
+			case COMMENT_STAR:
+				break;
+			case CONST_STRING :
+				s += c;
+				break;
+			case CONST_NUM:
+				Tmp.s = s;
+				Tmp.t = TK_CINT;
+
+				Toker.push_back(Tmp);
+				s = "";
+				state = START;
+				break;
+
+			case CONST_CHAR:
+				if(source[i + 1]!='\'')
+				{
+					error("illegal char");
+				}
+				i++;
+				Tmp.s = (s+' ');
+				Tmp.t = TK_CCHAR;
+
+				Toker.push_back(Tmp);
+				state = START;
+				s = "";
+				break;
+
+			case INDENT:
+				Tmp.s = s;
+				Tmp.t = (key_symbol[s]? key_symbol[s] : TK_INDENT);
+
+				Toker.push_back(Tmp);
+				state = START;
+				s = "";
 				break;
 			}
 		}
