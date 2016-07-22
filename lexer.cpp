@@ -83,7 +83,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 
 			case CONST_CHAR:
 				if(source[i+1] != '\'')
-					error("no ' in char");
+					error("illegal char");
 				else{
 					Tmp.s = (s+c);
 					Tmp.t = TK_CINT;
@@ -123,7 +123,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 				break;
 			case CONST_CHAR :
 				if(source[i+1] != '\'')
-					error("no ' in char");
+					error("illegal char");
 				else{
 					state = START;
 					Tmp.s = (s += c);
