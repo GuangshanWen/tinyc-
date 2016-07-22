@@ -30,7 +30,7 @@ void init(ifstream &file,string&source_code)
 	{
 		BUF = buf;
 		while(*BUF){
-			source_code += *BUF;
+			if(*BUF != ' ')source_code += *BUF;
 			BUF ++ ;
 		}
 		source_code += '\n';
@@ -118,6 +118,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 				state = START;
 				break;
 			default:
+				error();
 				// something wrong!
 			}
 		}
@@ -183,7 +184,163 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 		}
 		else if(c == '/')
 		{
+			if(source[i+1] == '*'){
+				switch(state)
+				{
+				case INDENT: 
+					Tmp.s = s;
+					Tmp.t = (key_symbol[s]?key_symbol[s] : TK_INDENT);
+					break;
+					
+				case COMMENT: COMMTN_STAR:
+					continue;
 
+				case CONST_STRING:
+					s += c;
+					continue;
+					
+				case CONST_CHAR :
+					error();
+					
+				}
+
+				state = COMMENT_STAR;
+				i++;
+				continue;
+			}
+			else if(source[i + 1] == '/')
+			{
+				switch(state)
+				{
+				case INDENT: 
+					Tmp.s = s;
+					Tmp.t = (key_symbol[s]?key_symbol[s] : TK_INDENT);
+					break;
+					
+				case COMMENT: COMMTN_STAR:
+					continue;
+
+				case CONST_STRING:
+					s += c;
+					continue;
+					
+				case CONST_CHAR :
+					error();
+					continue;
+				}
+				state = COMMENT;
+				i++;
+				continue;
+
+			}
+		    switch(state) //²»ÊÇ×¢ÊÍ
+			{
+			case START :
+				Tmp.s = (s+=c);
+				Tmp.t = TK_DIVID;
+
+				s = "";
+				state = START;
+				Toker.push_back(Tmp);
+				break;
+				
+			case INDENT:
+				Tmp.s = (s);
+				Tmp.t = (key_symbol[s]?key_symbol[s]:TK_INDENT);
+
+				Toker.push_back(Tmp);
+				state = START;
+				i--;
+				break;
+
+			case COMMENT: COMMTN_STAR:
+					continue;
+
+			case CONST_STRING:
+					s += c;
+					continue;
+					
+			case CONST_CHAR :
+				if(source[i+1] != ' ')
+					error();
+				Tmp.s = (s+=c);
+				Tmp.t = TK_CCHAR;
+
+				s = "";
+				state = START;
+				i++;
+				break;
+				
+			case CONST_NUM :
+				state = START;
+				i--;
+				
+				Tmp.s = s;
+				Tmp.t = TK_CINT;
+
+				s = "";
+				break;
+			}
 		}
+		else if( c == '*')
+		{
+			if(source[i+1] == '/')
+			{
+				state = START;
+				s = "";
+				i++;
+				continue;
+			}
+			else
+			{
+				switch(state)
+				{
+				case START:
+					Tmp.s = (s+=c);
+					Tmp.t = TK_STAR;
+					break;
+
+				case INDENT:
+					Tmp.s = s;
+					Tmp.t = (key_symbol[s]?key_symbol[s]:TK_INDENT);
+
+					s = "";
+					i--;
+					break;
+
+				case COMMENT: COMMENT_STAR:
+					break;
+
+				case CONST_STRING :
+					s += c;
+					break;
+
+				case CONST_CHAR:
+					if(source[i + 1]!= '\'')
+						error();
+					i++;
+					Tmp.s = (s += c);
+					Tmp.t = TK_CCHAR;
+
+					Toker.push_back(Tmp);
+
+					s = "";
+					state = START;
+					break;
+
+				case CONST_NUM:
+					Tmp.s = (s);
+					Tmp.t = TK_CINT;
+
+					Toker.push_back(Tmp);
+
+					s = "";
+					i--;
+					state = START;
+
+					break;
+				}
+			}
+		{
 	}
 }

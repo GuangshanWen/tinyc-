@@ -6,7 +6,7 @@ using namespace std;
 
 void error()
 {
-
+	exit(1);
 }
 
 
