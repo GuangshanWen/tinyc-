@@ -12,7 +12,7 @@
 using namespace std;
 
 void init(ifstream&,string&);
-
+void string_to_token(string &source,vector<Token,string>& Toker);
 
 enum State{
 
@@ -25,6 +25,7 @@ enum State{
 	CONST_STRING,
 	CONST_CHAR,
 
+	COMMENT_STAR
 };
 
 struct Tokener{
