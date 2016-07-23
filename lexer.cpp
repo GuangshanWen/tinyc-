@@ -2,8 +2,13 @@
 #include "lexer.h"
 map<string,Token> key_symbol;
 map<string,Token> Fin;
+
+vector<string> tok_2_str;
+
 const int MAX_SIZE = 1024;
 char buf[MAX_SIZE];
+
+vector<Tokener> Toker;
 
 void init(ifstream &file,string&source_code)
 {
@@ -20,6 +25,7 @@ void init(ifstream &file,string&source_code)
 
 	key_symbol["sizeof"] = TK_SIZEOF;
 	key_symbol["void"] = TK_VOID;
+	key_symbol["struct"] = TK_STRUCT;
 
 	Fin["{"] = TK_BEGIN;
 	Fin["}"] = TK_END;
@@ -44,7 +50,7 @@ void init(ifstream &file,string&source_code)
 	}
 }
 
-void string_to_token(string &source,vector<Tokener>& Toker)
+void string_to_token(string &source,vector<Tokener>&Toker)
 {
 	int index = 0;
 	string s = "";
@@ -215,7 +221,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 				break;
 			case CONST_NUM:
 				Tmp.s = s;
-				Tmp.t = (key_symbol[s] ? key_symbol[s]:TK_INDENT);
+				Tmp.t = TK_CINT;
 				
 				Toker.push_back(Tmp);
 
@@ -747,4 +753,9 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 			}
 		}
 	}
+
+	Tmp.s = "End Of File";
+	Tmp.t = TK_EOF;
+
+	Toker.push_back(Tmp);
 }

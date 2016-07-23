@@ -29,9 +29,11 @@ enum State{
 
 	COMMENT_STAR
 };
+//extern vector<Tokener> Toker;
+extern map<string,Token> key_symbol;
 
 void init(ifstream&,string&);
-void string_to_token(string &source,vector<Tokener>& Toker);
+void string_to_token(string &source,vector<Tokener>&);
 
 //string TOKENER[TK_INDENT + 1];
 

@@ -1,5 +1,6 @@
 
 #include "lexer.h"
+#include "parser.h"
 using namespace std;
 
 string source_code;
@@ -11,17 +12,14 @@ int main()
 {
 	ifstream f("hello.txt");
 
+	int ;
 
 	init(f,source_code);
 
 	string_to_token(source_code,t_vec);
 	
-	cout << "lexer works !"<< endl;
+	 print();
 
-	for (int i = 0;i<t_vec.size();++i)
-	{
-		cout << t_vec[i].s << " ";
-	}
 	cout << endl;
 	system("pause");
 	return 1;
