@@ -19,16 +19,45 @@ void print()
 		cout << t_vec[i].t << " ";
 	}
 }
+
+void init()
+{
+	
+}
+
 Token get_token()
 {
-	return TK_EOF;
+	return t_vec[index++].t;
+}
+
+void roll_back()
+{
+	index --;
+}
+
+bool is_type(Token t)
+{
+	return ( t == TK_INT || t == TK_STRUCT || t == TK_VOID || t == TK_SHORT /
+		     t == TK_CHAR );
+}
+
+void parse_declar()
+{
+
 }
 
 void parser(vector<Token> vec)
 {
-	while(get_token() != TK_EOF)
+	Token tmp;
+	while(true)
 	{
+		tmp = get_token();
+		if (tmp == TK_EOF)break;
 
+		if(is_type(tmp))
+		{
+			parse_declar();
+		}
 	}
 }
 
