@@ -27,6 +27,9 @@ void init(ifstream &file,string&source_code)
 	key_symbol["void"] = TK_VOID;
 	key_symbol["struct"] = TK_STRUCT;
 
+	key_symbol["__cdecl"] = KW_CDECL;
+	key_symbol["_stdcall"] = KW_STDCALL;
+
 	Fin["{"] = TK_BEGIN;
 	Fin["}"] = TK_END;
 	Fin["["] = TK_OPENBR;
