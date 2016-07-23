@@ -20,8 +20,9 @@ int main()
 
 	for (int i = 0;i<t_vec.size();++i)
 	{
-		cout << t_vec[i].s << endl;
+		cout << t_vec[i].s << " ";
 	}
+	cout << endl;
 	system("pause");
 	return 1;
 }

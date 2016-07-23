@@ -33,7 +33,7 @@ enum State{
 void init(ifstream&,string&);
 void string_to_token(string &source,vector<Tokener>& Toker);
 
-
+//string TOKENER[TK_INDENT + 1];
 
 
 #endif

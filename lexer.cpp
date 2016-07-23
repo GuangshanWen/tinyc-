@@ -143,6 +143,7 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 			switch (state)
 			{
 			case START :
+			case INDENT:
 				break;
 			case COMMENT_STAR:
 				state = COMMENT_STAR;
@@ -150,7 +151,9 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 			case COMMENT:
 				state = START;
 				break;
-			default:
+			case CONST_STRING:
+			case CONST_CHAR:
+			case CONST_NUM:
 				error("»±…Ÿ∑÷∫≈");
 				// something wrong!
 			}
@@ -676,7 +679,6 @@ void string_to_token(string &source,vector<Tokener>& Toker)
 
 				Toker.push_back(Tmp);
 
-				i++;
 				s = "";
 				state = START;
 				break;
