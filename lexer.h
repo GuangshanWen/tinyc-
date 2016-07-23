@@ -8,7 +8,7 @@
 #include <vector>
 #include<iostream>
 #include<fstream>
-
+#include "error.h"
 using namespace std;
 
 struct Tokener{

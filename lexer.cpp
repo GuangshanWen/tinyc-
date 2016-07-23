@@ -1,14 +1,12 @@
 #include"error.h"
 #include "lexer.h"
+
 map<string,Token> key_symbol;
 map<string,Token> Fin;
-
-vector<string> tok_2_str;
 
 const int MAX_SIZE = 1024;
 char buf[MAX_SIZE];
 
-vector<Tokener> Toker;
 
 void init(ifstream &file,string&source_code)
 {
@@ -26,9 +24,6 @@ void init(ifstream &file,string&source_code)
 	key_symbol["sizeof"] = TK_SIZEOF;
 	key_symbol["void"] = TK_VOID;
 	key_symbol["struct"] = TK_STRUCT;
-
-	key_symbol["__cdecl"] = KW_CDECL;
-	key_symbol["_stdcall"] = KW_STDCALL;
 
 	Fin["{"] = TK_BEGIN;
 	Fin["}"] = TK_END;
@@ -60,7 +55,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 	State state = START;
 	Tokener Tmp;
 
-	for(int i = 0; i < source.length(); ++i)
+	for(size_t i = 0; i < source.length(); ++i)
 	{
 		char c = source[i];
 		
@@ -81,7 +76,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 				state = INDENT;
 				break;
 
-			case COMMENT:COMMENT_STAR:
+			case COMMENT:case COMMENT_STAR:
 				
 				break;
 
@@ -246,7 +241,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 					Toker.push_back(Tmp);
 					break;
 					
-				case COMMENT: COMMTN_STAR:
+				case COMMENT: case COMMENT_STAR:
 					continue;
 
 				case CONST_STRING:
@@ -502,7 +497,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 				
 				break;
 
-			case COMMENT:COMENT_STAR:
+			case COMMENT:case COMMENT_STAR:
 				break;
 			case CONST_STRING :
 				s += c;
@@ -628,7 +623,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 			{
 			case (START):
 				break;
-			case COMMENT_STAR:COMMENT:
+			case COMMENT_STAR:case COMMENT:
 				continue;
 
 			case CONST_STRING:
@@ -691,7 +686,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 				s = "";
 				state = START;
 				break;
-			case INDENT:CONST_NUM:
+			case INDENT:case CONST_NUM:
 				error("4");
 			case CONST_CHAR:
 				if(source[i+1]!= '\'')
@@ -706,7 +701,8 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 				s = "";
 				break;
 
-			case COMMENT:COMMENT_START:
+			case COMMENT:
+			case COMMENT_STAR:
 				break;
 			}
 		}
