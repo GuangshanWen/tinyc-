@@ -6,5 +6,5 @@ using namespace std;
 #define __ERROR__
 
 void error(string s);
-
+void expect(string);
 #endif

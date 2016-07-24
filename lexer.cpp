@@ -289,7 +289,7 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 			{
 			case START :
 				Tmp.s = (s+=c);
-				Tmp.t = TK_DIVID;
+				Tmp.t = TK_DIVIDE;
 
 				s = "";
 				state = START;

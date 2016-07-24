@@ -2,6 +2,6 @@
 #define __PARSER__
 #include "error.h"
 //Token get_token();
-void print();
+void print_token();
 
 #endif
