@@ -148,6 +148,12 @@ void string_to_token(string &source,vector<Tokener>&Toker)
 			{
 			case START :
 			case INDENT:
+				Tmp.s = s;
+				Tmp.t = TK_INDENT;
+
+				Toker.push_back(Tmp);
+				s = "";
+				state = START;
 				break;
 			case COMMENT_STAR:
 				state = COMMENT_STAR;
